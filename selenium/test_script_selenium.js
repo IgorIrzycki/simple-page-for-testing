@@ -37,7 +37,8 @@ async function createDriver() {
     options.addArguments("--disable-dev-shm-usage");
     options.addArguments("--window-size=1280,720");
 
-    const service = new chrome.ServiceBuilder("chromedriver");
+    const driverPath = process.env.CHROMEDRIVER_PATH || "chromedriver";
+    const service = new chrome.ServiceBuilder(driverPath);
 
     return new Builder()
       .forBrowser("chrome")

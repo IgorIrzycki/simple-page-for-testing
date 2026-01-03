@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 45
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -20,32 +20,79 @@ jobs:
           node-version: "18"
           cache: "npm"
 
-      - name: Install dependencies
+      # ----------------------------
+      # Root dependencies
+      # ----------------------------
+      - name: Install root dependencies
         run: npm ci
-        
+
+      # ----------------------------
+      # Playwright
+      # ----------------------------
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright (Chrome headless)
+      - name: Run Playwright tests (Chrome headless)
         run: npm run ci:playwright:chrome
 
-      - name: Run Cypress (Chrome headless)
+      # ----------------------------
+      # Cypress
+      # ----------------------------
+      - name: Run Cypress tests (Chrome headless)
         run: npm run ci:cypress:chrome
 
+      # ----------------------------
+      # Selenium dependencies (separate package.json)
+      # ----------------------------
       - name: Install Selenium dependencies
         run: npm ci
         working-directory: selenium
 
+      # ----------------------------
+      # Chrome + Chromedriver for Selenium
+      # ----------------------------
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: Setup Chromedriver
         uses: nanasess/setup-chromedriver@v2
 
-      - name: Run Selenium (Chrome headless)
+      - name: Show Chrome & Chromedriver versions
+        run: |
+          google-chrome --version || true
+          chromedriver --version || true
+          which google-chrome || true
+          which chromedriver || true
+
+      # Export full path to chromedriver so Selenium can use it explicitly
+      - name: Export CHROMEDRIVER_PATH
+        run: echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
+
+      # Optional diagnostic to confirm what would be picked up from selenium/node_modules/.bin
+      - name: Diagnose chromedriver precedence
+        run: |
+          echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH"
+          echo "PATH=$PATH"
+          ls -la selenium/node_modules/.bin | head -n 50 || true
+          if [ -f "selenium/node_modules/.bin/chromedriver" ]; then
+            echo "Local selenium/.bin chromedriver version:"
+            selenium/node_modules/.bin/chromedriver --version || true
+          else
+            echo "No local selenium/.bin chromedriver"
+          fi
+
+      # ----------------------------
+      # Selenium
+      # ----------------------------
+      - name: Run Selenium tests (Chrome headless)
+        env:
+          CHROMEDRIVER_PATH: ${{ env.CHROMEDRIVER_PATH }}
         run: npm run ci:selenium:chrome:headless
 
-      - name: Upload artifacts
+      # ----------------------------
+      # Artifacts
+      # ----------------------------
+      - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
