@@ -28,9 +28,9 @@
     "selenium:chrome:headless": "node selenium/test_script_selenium.js --browser=chrome --headless",
     "selenium:firefox": "node selenium/test_script_selenium.js --browser=firefox",
     "selenium:firefox:headless": "node selenium/test_script_selenium.js --browser=firefox --headless",
-    "test:playwright": "playwright test",
+    "test:playwright": "npx playwright test --project=chrome",
     "start:ci": "cross-env HOST=0.0.0.0 PORT=3000 react-scripts start",
-    "ci:playwright": "start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run test:playwright\" --wait-on-timeout 120000"
+    "ci:playwright": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run test:playwright\""
 
   },
   "eslintConfig": {
