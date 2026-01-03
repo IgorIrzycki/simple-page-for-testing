@@ -27,7 +27,10 @@
     "selenium:chrome": "node selenium/test_script_selenium.js --browser=chrome",
     "selenium:chrome:headless": "node selenium/test_script_selenium.js --browser=chrome --headless",
     "selenium:firefox": "node selenium/test_script_selenium.js --browser=firefox",
-    "selenium:firefox:headless": "node selenium/test_script_selenium.js --browser=firefox --headless"
+    "selenium:firefox:headless": "node selenium/test_script_selenium.js --browser=firefox --headless",
+    "test:playwright": "playwright test",
+    "ci:playwright": "start-server-and-test \"npm start\" http://localhost:3000 \"npm run test:playwright\""
+
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +57,7 @@
     "cypress-mochawesome-reporter": "^4.0.2",
     "mochawesome": "^7.1.4",
     "mochawesome-merge": "^5.0.0",
-    "mochawesome-report-generator": "^6.3.0"
+    "mochawesome-report-generator": "^6.3.0",
+    "start-server-and-test": "^2.1.3"
   }
 }
