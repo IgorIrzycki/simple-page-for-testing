@@ -1,0 +1,16 @@
+{
+  "name": "selenium-tests",
+  "version": "1.0.0",
+  "main": "test_basic.js",
+  "scripts": {
+    "test": "node test_basic.js"
+  },
+  "dependencies": {
+    "chromedriver": "^141.0.4",
+    "selenium-webdriver": "^4.37.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

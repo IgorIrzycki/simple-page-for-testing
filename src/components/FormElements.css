@@ -1,0 +1,75 @@
+.form-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;
+}
+
+.form-section label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+  grid-column: span 2;
+}
+
+.form-section input,
+.form-section textarea,
+.form-section select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.checkbox-section {
+  grid-column: span 2;
+  background: #f8fbff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid #dce4f1;
+  margin-top: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.radio-section {
+  grid-column: span 2;
+  background: #f8fbff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid #dce4f1;
+  margin-top: 15px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toggle {
+  width: 80px;
+  padding: 6px;
+  border-radius: 20px;
+  background-color: #ccc;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  user-select: none;
+  transition: 0.3s;
+}
+
+.toggle.on {
+  background-color: #28a745;
+}
