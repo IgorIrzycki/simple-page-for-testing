@@ -29,7 +29,8 @@
     "selenium:firefox": "node selenium/test_script_selenium.js --browser=firefox",
     "selenium:firefox:headless": "node selenium/test_script_selenium.js --browser=firefox --headless",
     "test:playwright": "playwright test",
-    "ci:playwright": "start-server-and-test \"npm start\" http://localhost:3000 \"npm run test:playwright\""
+    "start:ci": "cross-env HOST=0.0.0.0 PORT=3000 react-scripts start",
+    "ci:playwright": "start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run test:playwright\" --wait-on-timeout 120000"
 
   },
   "eslintConfig": {
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.7.2",
+    "cross-env": "^10.1.0",
     "cypress": "^14.5.4",
     "cypress-mochawesome-reporter": "^4.0.2",
     "mochawesome": "^7.1.4",
