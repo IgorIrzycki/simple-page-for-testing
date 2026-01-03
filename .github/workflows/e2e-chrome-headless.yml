@@ -32,8 +32,11 @@ jobs:
       - name: Run Cypress (Chrome headless)
         run: npm run ci:cypress:chrome
 
-      - name: Add local chromedriver to PATH
-        run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Setup Chromedriver
+        uses: nanasess/setup-chromedriver@v2
 
       - name: Run Selenium (Chrome headless)
         run: npm run ci:selenium:chrome:headless
