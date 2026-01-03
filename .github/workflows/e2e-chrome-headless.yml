@@ -1,0 +1,50 @@
+name: E2E - Chrome Headless (Playwright, Cypress, Selenium)
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright (Chrome headless)
+        run: npm run ci:playwright:chrome
+
+      - name: Run Cypress (Chrome headless)
+        run: npm run ci:cypress:chrome
+
+      - name: Run Selenium (Chrome headless)
+        run: npm run ci:selenium:chrome:headless
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: |
+            playwright-report
+            test-results
+            blob-report
+            cypress/screenshots
+            cypress/videos
+            selenium/artifacts
+          if-no-files-found: ignore
