@@ -6,7 +6,6 @@
     "test": "node test_basic.js"
   },
   "dependencies": {
-    "chromedriver": "^141.0.4",
     "selenium-webdriver": "^4.37.0"
   },
   "keywords": [],
