@@ -34,7 +34,7 @@ describe("Zestaw testów UI Aplikacja React", () => {
 
   it("04. Pole tekstowe ma poprawny stan początkowy", () => {
     cy.get('[data-testid="text-input"]')
-      .should("have.attr", "placeholder", "Enter your name")
+      .should("have.attr", "placeholder", "Enter your name...")
       .and("have.value", "");
   });
 
