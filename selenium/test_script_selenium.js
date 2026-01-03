@@ -28,8 +28,22 @@ async function changeRangeValue(driver, el, value) {
 async function createDriver() {
   if (browser === "chrome") {
     const options = new chrome.Options();
-    if (headlessMode) options.addArguments("--headless=new");
-    return new Builder().forBrowser("chrome").setChromeOptions(options).build();
+
+    if (headlessMode) {
+      options.addArguments("--headless=new");
+    }
+
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--window-size=1280,720");
+
+    const service = new chrome.ServiceBuilder("chromedriver");
+
+    return new Builder()
+      .forBrowser("chrome")
+      .setChromeOptions(options)
+      .setChromeService(service)
+      .build();
   }
   if (browser === "firefox") {
     const options = new firefox.Options();

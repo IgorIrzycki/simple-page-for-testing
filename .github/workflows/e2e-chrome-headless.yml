@@ -32,6 +32,10 @@ jobs:
       - name: Run Cypress (Chrome headless)
         run: npm run ci:cypress:chrome
 
+      - name: Install Selenium dependencies
+        run: npm ci
+        working-directory: selenium
+
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
 
