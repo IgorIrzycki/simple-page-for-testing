@@ -13,14 +13,17 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       on("task", {
         startMonitoring() {
+          if (process.platform === "win32") return null;
           startMonitoring();
           return null;
         },
         stopMonitoring({ mode, browser }) {
+          if (process.platform === "win32") return null;
           stopMonitoring("Cypress", mode, browser);
           return null;
         },
       });
+
 
       allureWriter(on, config);
       return config;
