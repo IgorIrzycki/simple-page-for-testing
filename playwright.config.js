@@ -33,7 +33,7 @@ export default defineConfig({
 
   reporter: [
   ["line"],
-  ["allure-playwright", { outputFolder: "allure-results/playwright" }]
-]
+  ["allure-playwright", { outputFolder: "allure-results" }]
+  ]
 });
 
