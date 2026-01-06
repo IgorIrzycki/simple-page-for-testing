@@ -7,8 +7,9 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000",
 
     env: {
-      allureResultsPath: "allure-results",
-      allureReuseAfterSpec: true,
+    allureResultsPath: "allure-results",
+    allureClearResults: false,
+    allureReuseAfterSpec: true,
     },
 
 
