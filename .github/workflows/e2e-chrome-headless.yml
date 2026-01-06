@@ -23,14 +23,35 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
+      - name: Prepare Allure results dir
+        run: |
+          rm -rf allure-results
+          mkdir -p allure-results
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
+
+      - name: Run Cypress tests (Chrome headless)
+        run: npx cypress run --browser chrome --env allure=true,allureClearResults=false
+
+      - name: Debug Allure after Cypress
+        if: always()
+        run: |
+          echo "Allure results after Cypress:"
+          ls -la allure-results || true
+          echo "Count:"
+          find allure-results -maxdepth 1 -type f | wc -l || true
 
       - name: Run Playwright tests (Chrome headless)
         run: npm run ci:playwright:chrome
 
-      - name: Run Cypress tests (Chrome headless)
-        run: npm run ci:cypress:chrome
+      - name: Debug Allure after Playwright
+        if: always()
+        run: |
+          echo "Allure results after Playwright:"
+          ls -la allure-results || true
+          echo "Count:"
+          find allure-results -maxdepth 1 -type f | wc -l || true
 
       - name: Install Selenium dependencies
         run: npm ci
@@ -69,6 +90,14 @@ jobs:
           CHROMEDRIVER_PATH: ${{ env.CHROMEDRIVER_PATH }}
         run: npm run ci:selenium:chrome:headless
 
+      - name: Debug Allure after Selenium
+        if: always()
+        run: |
+          echo "Allure results after Selenium:"
+          ls -la allure-results || true
+          echo "Count:"
+          find allure-results -maxdepth 1 -type f | wc -l || true
+
       - name: Generate Allure report
         if: always()
         run: npm run allure:generate
@@ -80,7 +109,7 @@ jobs:
           name: allure-report
           path: allure-report
           if-no-files-found: ignore
-      
+
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
@@ -88,7 +117,6 @@ jobs:
           name: allure-results
           path: allure-results
           if-no-files-found: ignore
-
 
       - name: Upload test artifacts
         if: always()
