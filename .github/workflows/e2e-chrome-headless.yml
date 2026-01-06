@@ -20,37 +20,22 @@ jobs:
           node-version: "18"
           cache: "npm"
 
-      # ----------------------------
-      # Root dependencies
-      # ----------------------------
       - name: Install root dependencies
         run: npm ci
 
-      # ----------------------------
-      # Playwright
-      # ----------------------------
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests (Chrome headless)
         run: npm run ci:playwright:chrome
 
-      # ----------------------------
-      # Cypress
-      # ----------------------------
       - name: Run Cypress tests (Chrome headless)
         run: npm run ci:cypress:chrome
 
-      # ----------------------------
-      # Selenium dependencies (separate package.json)
-      # ----------------------------
       - name: Install Selenium dependencies
         run: npm ci
         working-directory: selenium
 
-      # ----------------------------
-      # Chrome + Chromedriver for Selenium
-      # ----------------------------
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
 
@@ -64,11 +49,9 @@ jobs:
           which google-chrome || true
           which chromedriver || true
 
-      # Export full path to chromedriver so Selenium can use it explicitly
       - name: Export CHROMEDRIVER_PATH
         run: echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
 
-      # Optional diagnostic to confirm what would be picked up from selenium/node_modules/.bin
       - name: Diagnose chromedriver precedence
         run: |
           echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH"
@@ -81,17 +64,32 @@ jobs:
             echo "No local selenium/.bin chromedriver"
           fi
 
-      # ----------------------------
-      # Selenium
-      # ----------------------------
       - name: Run Selenium tests (Chrome headless)
         env:
           CHROMEDRIVER_PATH: ${{ env.CHROMEDRIVER_PATH }}
         run: npm run ci:selenium:chrome:headless
 
-      # ----------------------------
-      # Artifacts
-      # ----------------------------
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+          if-no-files-found: ignore
+      
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+          if-no-files-found: ignore
+
+
       - name: Upload test artifacts
         if: always()
         uses: actions/upload-artifact@v4

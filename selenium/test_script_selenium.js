@@ -3,6 +3,17 @@ const chrome = require("selenium-webdriver/chrome");
 const firefox = require("selenium-webdriver/firefox");
 const { startMonitoring, stopMonitoring } = require("../metrics");
 
+const fs = require("fs");
+const path = require("path");
+
+const seleniumLogs = [];
+const originalLog = console.log;
+
+console.log = (...args) => {
+  seleniumLogs.push(args.map(a => (typeof a === "string" ? a : JSON.stringify(a))).join(" "));
+  originalLog(...args);
+};
+
 const args = process.argv.slice(2);
 const browser = args.find(a => a.startsWith("--browser="))?.split("=")[1] || "chrome";
 const headlessMode = args.includes("--headless");
@@ -197,6 +208,18 @@ async function createDriver() {
   } finally {
     const mode = headlessMode ? "Headless" : "Headed";
     stopMonitoring("Selenium", mode, browser);
+    try {
+      const outDir = path.join(__dirname, "..", "allure-results", "selenium");
+      fs.mkdirSync(outDir, { recursive: true });
+
+      const modeName = headlessMode ? "headless" : "headed";
+      const fileName = `selenium-${browser}-${modeName}-log.txt`;
+      const outPath = path.join(outDir, fileName);
+
+      fs.writeFileSync(outPath, seleniumLogs.join("\n"), "utf-8");
+    } catch (e) {
+      originalLog("Could not write Selenium logs for Allure:", e);
+    }
     await driver.quit();
   }
 })();

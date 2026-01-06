@@ -29,6 +29,11 @@ export default defineConfig({
         trace: "on-first-retry",
       },
     }
-  ]
+  ],
+
+  reporter: [
+  ["line"],
+  ["allure-playwright", { outputFolder: "allure-results/playwright" }]
+]
 });
 

@@ -28,13 +28,14 @@
     "selenium:chrome:headless": "node selenium/test_script_selenium.js --browser=chrome --headless",
     "selenium:firefox": "node selenium/test_script_selenium.js --browser=firefox",
     "selenium:firefox:headless": "node selenium/test_script_selenium.js --browser=firefox --headless",
-
     "test:playwright:chrome": "npx playwright test --project=chrome",
     "test:cypress:chrome": "npx cypress run --browser chrome",
     "start:ci": "cross-env HOST=0.0.0.0 PORT=3000 react-scripts start",
     "ci:playwright:chrome": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run test:playwright:chrome\"",
     "ci:cypress:chrome": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run test:cypress:chrome\"",
-    "ci:selenium:chrome:headless": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run selenium:chrome:headless\""
+    "ci:selenium:chrome:headless": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"npm run start:ci\" http://127.0.0.1:3000 \"npm run selenium:chrome:headless\"",
+    "allure:generate": "npx allure generate allure-results --clean -o allure-report",
+    "allure:open": "npx allure open allure-report"
   },
   "eslintConfig": {
     "extends": [
@@ -56,7 +57,10 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
+    "@shelex/cypress-allure-plugin": "^2.41.2",
     "@types/node": "^24.7.2",
+    "allure-commandline": "^2.36.0",
+    "allure-playwright": "^3.4.3",
     "cross-env": "^10.1.0",
     "cypress": "^14.5.4",
     "cypress-mochawesome-reporter": "^4.0.2",
