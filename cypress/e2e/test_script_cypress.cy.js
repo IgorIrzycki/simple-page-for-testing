@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("Zestaw testów UI Aplikacja React", () => {
+describe("Cypress - Zestaw testów UI Aplikacja React", () => {
   before(() => {
     cy.task("startMonitoring");
     cy.visit("/");

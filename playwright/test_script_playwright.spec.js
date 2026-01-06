@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { startMonitoring, stopMonitoring } from "../metrics.js"; 
 
-test.describe("Zestaw testów UI Aplikacja React", () => {
+test.describe("Playwright - Zestaw testów UI Aplikacja React", () => {
 
   test.beforeAll(async () => {
     const mode = test.info().project.use.headless ? "Headless" : "Headed";
@@ -14,9 +14,14 @@ test.describe("Zestaw testów UI Aplikacja React", () => {
     stopMonitoring("Playwright", mode, test.info().project.name);
   });
   
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+  test.beforeEach(async ({ page }, testInfo) => {
+  testInfo.annotations.push(
+    { type: "parentSuite", description: "Playwright" }
+  );
+
+  await page.goto("/");
   });
+
 
   test("01. Tytuł strony jest poprawny", async ({ page }) => {
     await expect(page).toHaveTitle("Simple Page for Testing");
