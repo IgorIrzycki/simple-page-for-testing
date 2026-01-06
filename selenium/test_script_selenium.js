@@ -209,7 +209,7 @@ async function createDriver() {
     const mode = headlessMode ? "Headless" : "Headed";
     stopMonitoring("Selenium", mode, browser);
     try {
-      const outDir = path.join(__dirname, "..", "allure-results", "selenium");
+      const outDir = path.join(__dirname, "..", "allure-results");
       fs.mkdirSync(outDir, { recursive: true });
 
       const modeName = headlessMode ? "headless" : "headed";

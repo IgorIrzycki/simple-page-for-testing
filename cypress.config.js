@@ -7,8 +7,10 @@ module.exports = defineConfig({
     baseUrl: "http://localhost:3000",
 
     env: {
-      allureResultsPath: "allure-results/cypress",
+      allureResultsPath: "allure-results",
+      allureReuseAfterSpec: true,
     },
+
 
     setupNodeEvents(on, config) {
       on("task", {
