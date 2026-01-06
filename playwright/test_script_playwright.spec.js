@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { startMonitoring, stopMonitoring } from "../metrics.js"; 
+import { label } from "allure-js-commons";
 
 test.describe("Playwright - Zestaw testów UI Aplikacja React", () => {
 
@@ -14,11 +15,8 @@ test.describe("Playwright - Zestaw testów UI Aplikacja React", () => {
     stopMonitoring("Playwright", mode, test.info().project.name);
   });
   
-  test.beforeEach(async ({ page }, testInfo) => {
-  testInfo.annotations.push(
-    { type: "parentSuite", description: "Playwright" }
-  );
-
+  test.beforeEach(async ({ page }) => {
+  label("parentSuite", "Playwright");
   await page.goto("/");
   });
 
